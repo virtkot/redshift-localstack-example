@@ -26,7 +26,7 @@ def test_provisions_databases_schemas_and_tables(terraform_stack, tmp_path):
     assert "analytics" in databases
 
     tables = client.list_tables(ClusterIdentifier=cluster_identifier, Database="analytics")["Tables"]
-    table_names = {(t["SchemaName"], t["TableName"]) for t in tables}
+    table_names = {(t["schema"], t["name"]) for t in tables}
 
     assert table_names == {
         ("public", "customers"),
