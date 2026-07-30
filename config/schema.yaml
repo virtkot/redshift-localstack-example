@@ -1,0 +1,29 @@
+# Example only — not production-ready or officially supported. See README.md.
+#
+# Sample config file: describes the databases, schemas, and tables to
+# provision on the Redshift cluster. In production this file (or one like it)
+# lives in a real S3 bucket; the provisioning job pulls it down
+# before creating any Redshift resources.
+databases:
+  - name: analytics
+    schemas:
+      - name: public
+        tables:
+          - name: customers
+            columns:
+              - {name: customer_id, type: INTEGER, constraints: "NOT NULL"}
+              - {name: full_name, type: "VARCHAR(255)"}
+              - {name: signup_date, type: DATE}
+          - name: transactions
+            columns:
+              - {name: transaction_id, type: INTEGER, constraints: "NOT NULL"}
+              - {name: customer_id, type: INTEGER}
+              - {name: amount, type: "DECIMAL(10,2)"}
+              - {name: created_at, type: TIMESTAMP}
+      - name: reporting
+        tables:
+          - name: daily_summary
+            columns:
+              - {name: summary_date, type: DATE, constraints: "NOT NULL"}
+              - {name: total_transactions, type: INTEGER}
+              - {name: total_amount, type: "DECIMAL(12,2)"}

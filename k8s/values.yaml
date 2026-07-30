@@ -1,0 +1,28 @@
+# Example only — not production-ready or officially supported. See README.md.
+#
+# Helm values for the official LocalStack chart (localstack/localstack),
+# mirroring how LocalStack Pro runs on a real EKS cluster:
+# as a container inside a Kubernetes pod, not a bare `docker run`.
+#
+# LOCALSTACK_AUTH_TOKEN is intentionally not set here — it's injected from a
+# Kubernetes Secret (see `make up`) so the token never lands in this file.
+
+image:
+  repository: localstack/localstack-pro
+
+extraEnvVars:
+  - name: SERVICES
+    value: "s3,redshift,redshift-data"
+  - name: LOCALSTACK_AUTH_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: localstack-auth-token
+        key: LOCALSTACK_AUTH_TOKEN
+
+resources:
+  requests:
+    cpu: "1"
+    memory: 1Gi
+  limits:
+    cpu: "2"
+    memory: 2Gi
